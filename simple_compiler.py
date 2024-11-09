@@ -55,4 +55,30 @@ class Parser:
     
     def parse(self):
         return self.expr()
+
+def expr (self):
+    node = self.term()
+    while self.pos < len(self.tokens) and self.tokens[self.pos][0] in ('PLUS', 'MINUS'):
+        op = self.consume()
+        right = self.term()
+        node = BinOp (node, op, right)
+    return node
+
+def term (self):
+    node = self.factor()
+    while self.pos < len(self.tokens) and self.tokens[self.pos][0] in ('MUL', 'DIV'):
+        op = self.consume()
+        right = self.factor()
+        node = BinOp(node, op, right)
+    return node
+
+def factor (self):
+    if self.tokens[self.pos][0] == 'NUMBER':
+        return Number (self.consume('NUMBER'))
+    elif self.tokens[self.pos][0] == 'LPAREN':
+        self.consume('LPAREN')
+        node = self.expor()
+        self.consume('RPAREN')
+        return node
+    
     
